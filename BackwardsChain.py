@@ -1,18 +1,7 @@
 import json
 import struct
 import os
-
-class Rule(object):
-    def __init__(self, inputs, outputs):
-        self.inputs = inputs
-        self.outputs = outputs
-
-    def applies(self, data):
-        return set(self.inputs).issubset(set(data))
-
-    def implies(self, target):
-        return target in self.outputs
-
+from rule import Rule
 
 rule1 = Rule(["p","q"],["s"])
 rule2 = Rule(["r"],["t"])
@@ -37,7 +26,7 @@ def backwardsChain(knowledge, targetValue):
                     backwardsChain(knowledge, value)
 
             if rule.applies(knowledge):
-                knowledge.extend(rule.outputs)
+                rule.apply(knowledge)
                 knowledge = list(set(knowledge))
 
 targetValue = "v"
